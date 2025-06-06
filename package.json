@@ -1,0 +1,21 @@
+{
+  "name": "twitter-bot",
+  "version": "1.0.0",
+  "description": "A Twitter bot that posts daily coding tips or motivational quotes using GEMINI AI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test-credentials.js",
+    "post-now": "node -e \"import('./src/bot.js').then(m => m.generateAndPostTweet())\"",
+    "test-ai": "node test-ai.js"
+  },
+  "author": "Shivam Chaudhary",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^16.5.0",
+    "node-schedule": "^2.1.1",
+    "twitter-api-v2": "^1.23.2"
+  },
+  "type": "module"
+}
