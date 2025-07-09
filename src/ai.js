@@ -28,15 +28,50 @@ export async function generateTweetContent(contentType = "coding_tip") {
 
     // Define different prompt templates based on content type
     const prompts = {
+      mern_tip:
+        "Generate a specific, practical tip about MERN stack (MongoDB, Express.js, React.js, Node.js) development that is tweetable (under 280 characters). " +
+        "Focus on real-world scenarios, performance optimization, best practices, or common pitfalls. " +
+        "Include relevant hashtags like #MERN #WebDev #JavaScript. Make it actionable and valuable.",
+
+      react_tip:
+        "Share an advanced React.js tip or best practice that is tweetable (under 280 characters). " +
+        "Cover topics like hooks, performance optimization, state management, or component patterns. " +
+        "Include code examples if possible and relevant hashtags like #ReactJS #JavaScript #WebDev.",
+
+      node_backend:
+        "Create a practical Node.js/Express.js backend development tip that is tweetable (under 280 characters). " +
+        "Focus on API design, security, database optimization, middleware, or error handling. " +
+        "Include relevant hashtags like #NodeJS #Backend #WebDev. Make it specific and actionable.",
+
+      mongodb_tip:
+        "Share a MongoDB database tip or best practice that is tweetable (under 280 characters). " +
+        "Cover topics like schema design, indexing, aggregation, performance, or security. " +
+        "Include relevant hashtags like #MongoDB #Database #MERN. Focus on practical scenarios.",
+
+      web_security:
+        "Generate a web security tip for developers that is tweetable (under 280 characters). " +
+        "Cover important security practices, common vulnerabilities, or protection strategies. " +
+        "Include relevant hashtags like #WebSecurity #CyberSecurity #DevSecOps.",
+
       coding_tip:
-        "Generate a concise and insightful coding tip for software developers that is tweetable (under 280 characters). " +
-        "The tip should be practical, teach something specific, and include relevant hashtags. " +
-        "Format it professionally and make it engaging. Focus on principles, best practices, or productivity hacks.",
+        "Generate a concise and insightful coding tip about clean code, design patterns, or software architecture that is tweetable (under 280 characters). " +
+        "Focus on language-agnostic principles that improve code quality. " +
+        "Include relevant hashtags like #CleanCode #Programming #SoftwareEngineering.",
+
+      git_tip:
+        "Share a Git or GitHub workflow tip that is tweetable (under 280 characters). " +
+        "Focus on practical commands, branching strategies, or collaboration best practices. " +
+        "Include relevant hashtags like #Git #GitHub #DevOps.",
 
       motivational_quote:
-        "Create an inspiring and motivational quote for programmers and developers that is tweetable (under 280 characters). " +
-        "Make it empowering, thoughtful, and relevant to coding, technology, or professional growth. " +
-        "Include relevant hashtags. The quote should be concise yet impactful.",
+        "Create an inspiring and motivational quote for developers that is tweetable (under 280 characters). " +
+        "Make it relevant to coding, problem-solving, or professional growth. " +
+        "Include relevant hashtags like #DevLife #CodeLife #TechMotivation.",
+
+      debugging_tip:
+        "Share a debugging strategy or tool tip that is tweetable (under 280 characters). " +
+        "Focus on practical approaches to finding and fixing bugs efficiently. " +
+        "Include relevant hashtags like #Debugging #DevTools #ProblemSolving.",
     };
 
     // Select prompt based on content type or default to coding tip
@@ -79,16 +114,34 @@ export async function generateTweetContent(contentType = "coding_tip") {
   }
 }
 
-// Alternating between coding tips and motivational quotes
-let lastGeneratedType = "motivational_quote";
+// Array of all content types for rotation
+const contentTypes = [
+  "mern_tip",
+  "react_tip",
+  "node_backend",
+  "mongodb_tip",
+  "web_security",
+  "coding_tip",
+  "git_tip",
+  "debugging_tip",
+  "motivational_quote",
+];
+
+let currentIndex = Math.floor(Math.random() * contentTypes.length);
 
 /**
- * Generate a tweet with alternating content types
+ * Generate a tweet with rotating content types
  * @returns {Promise<string>} - Generated tweet content
  */
 export async function generateAlternatingTweet() {
-  // Switch content type
-  lastGeneratedType =
-    lastGeneratedType === "coding_tip" ? "motivational_quote" : "coding_tip";
-  return generateTweetContent(lastGeneratedType);
+  // Move to next content type
+  currentIndex = (currentIndex + 1) % contentTypes.length;
+
+  // Add some randomness to avoid predictable patterns
+  if (Math.random() < 0.3) {
+    // 30% chance to pick random type
+    currentIndex = Math.floor(Math.random() * contentTypes.length);
+  }
+
+  return generateTweetContent(contentTypes[currentIndex]);
 }
