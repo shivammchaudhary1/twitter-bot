@@ -51,34 +51,27 @@ function startBot() {
  * Post a tweet immediately (for testing purposes)
  */
 async function postImmediately() {
-  console.log("🚀 Posting a tweet immediately for testing...\n");
-
-  // First test credentials
-  const credentialsOk = await testTwitterCredentials();
-  if (!credentialsOk) {
-    console.log("\n❌ Cannot post tweet due to credential issues.");
-    console.log("Please run 'npm test' for detailed diagnostics.");
-    return;
-  }
+  console.log("🚀 Generating and posting tweet...\n");
 
   try {
     await generateAndPostTweet();
-    console.log("\n✅ Test tweet posted successfully!");
+    console.log("\n✅ Tweet posted successfully!");
   } catch (error) {
-    console.error("\n❌ Test tweet failed:", error.message);
+    console.error("\n❌ Tweet failed:", error.message);
+    if (error.code === 401 || error.code === 403) {
+      console.log("Please check your Twitter API credentials in the .env file");
+    }
   }
 }
 
-// Check if we should run in test mode or schedule mode
+// Check if we should run in immediate mode or schedule mode
 const args = process.argv.slice(2);
-if (args.includes("--schedule")) {
-  startBot();
-} else {
-  // Default: Post immediately for testing
+if (args.includes("--immediate")) {
+  // Only post immediately if explicitly requested
   postImmediately().then(() => {
-    console.log("\n💡 Tip: Use 'npm test' to run diagnostics");
-    console.log(
-      "💡 Tip: Use 'node index.js --schedule' to start the scheduler"
-    );
+    console.log("\n💡 Tip: Remove --immediate flag to run in scheduled mode");
   });
+} else {
+  // Default: Run in scheduled mode
+  startBot();
 }
